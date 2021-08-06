@@ -46,3 +46,14 @@ exports.createShortUrl = (req, res) => {
         }))
     }
 }
+
+exports.redirect = (req, res) => {
+    ShortUrl.findOne({short_id: req.params.short_id}, (err, data) => {
+        if (!data) {
+            res.json({'error': 'Provided URL not found'});
+        } else {
+            ShortUrl.findOneAndUpdate({short_id: req.params.short_id}, {$inc: {visits: 1 }}).exec()
+            res.redirect(data.original_url);
+        }
+    })
+}
