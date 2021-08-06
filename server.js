@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const cores = require('cores');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require ('swagger-ui-express');
 
@@ -19,6 +20,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 // Mount middleware
 app.use(express.json());
+app.use(cors());
 
 // Mount router
 app.use('/', redirects);
