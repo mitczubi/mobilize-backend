@@ -102,3 +102,7 @@ exports.redirect = (req, res) => {
         }
     })
 }
+
+exports.getApiDocs = (req, res) => {
+    res.redirect(req.protocol + '://' + req.get('host') + "/api/api-docs");
+}
