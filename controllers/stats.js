@@ -1,7 +1,7 @@
 const ShortUrl = require('../models/ShortUrl');
 
 exports.getLinkStats = (req, res) => {
-    var url = new URL(req.body.url);
+    var url = new URL(req.protocol + '://' + req.body.url);
     var short_id = url.pathname.substring(1);
     ShortUrl
         .findOne({short_id: short_id})
