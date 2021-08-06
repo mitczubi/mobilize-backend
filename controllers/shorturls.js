@@ -41,9 +41,54 @@ exports.createShortUrl = (req, res) => {
             })
         })
     } else {
-        res.json(({
+        res.json({
             error: "Invalid URL"
-        }))
+        })
+    }
+}
+
+exports.createCustomShortUrl = (req, res) => {
+    var url_expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+    var regex = new RegExp(url_expression);
+
+    // validate if the provided url is a url else return error
+    if ((req.body.url).match(regex)) {
+        short_id = req.body.custom_url
+        
+        if (short_id) {
+            ShortUrl.findOne({short_id: short_id}, (err, data) => {
+                if (err) return console.error(err);
+
+                if (!data) {
+                    const shortUrl = new ShortUrl({
+                        original_url: req.body.url,
+                        short_id: short_id
+                    });
+            
+                    shortUrl.save(function(err, data) {
+                        if (err) return console.error(err)
+                    });
+            
+                    short_url = req.get('host') + "/" + shortUrl.short_id
+
+                    res.json({
+                        short_url: short_url
+                    })
+                } else {
+                    res.json({
+                        "message": "Provided custom name is already in use."
+                    })
+                }
+            })
+        } else {
+            res.json({
+                error: "Empty custom name is not allowed."
+            })
+        }
+    } else {
+        res.json({
+            error: "Invalid URL"
+        })
     }
 }
 

@@ -16,6 +16,10 @@ const ShortUrlSchema = new mongoose.Schema({
     visits: {
         type: Number,
         default: 0
+    },
+    visits_per_day: {
+        type: Number,
+        default: 0
     }
 })
 
